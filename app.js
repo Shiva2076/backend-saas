@@ -1,4 +1,3 @@
-// app.js - corrected version
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -21,33 +20,33 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Middleware
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Import routes - ensure these files exist and export properly
 const authRoutes = require('./routes/authRoutes');
 const toolRoutes = require('./routes/toolRoutes');
 const usageRoutes = require('./routes/usageRoutes');
 
-// Verify routes are valid middleware functions
-console.log('Auth Routes:', typeof authRoutes); // Should be 'function'
-console.log('Tool Routes:', typeof toolRoutes); // Should be 'function'
-console.log('Usage Routes:', typeof usageRoutes); // Should be 'function'
+
+console.log('Auth Routes:', typeof authRoutes); 
+console.log('Tool Routes:', typeof toolRoutes); 
+console.log('Usage Routes:', typeof usageRoutes);
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tools', toolRoutes);
 app.use('/api/usage', usageRoutes);
 
-// Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'healthy' });
 });
 
-// Error handler
+app.get('/', (req, res) => {
+  res.send('API is running 🎉');
+});
+
 app.use(errorHandler);
 
 module.exports = app;
